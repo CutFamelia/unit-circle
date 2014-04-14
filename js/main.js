@@ -14,6 +14,8 @@ function UnitCircle() {
     $('input[name=labelType]:radio').on("change", function(){
         labelType = $(this).val()
         stdAngles()
+        $(".angleSweep").remove()
+        drawAngleSweep(lastAngle)
         console.log(labelType)
     })
 
@@ -150,9 +152,13 @@ function UnitCircle() {
            .text(angleAliases[parseFloat(angle).toFixed(2)][labelType])
     }
 
-    drawAngleSweep(1.23);
+    var lastAngle = 1.23
+    drawAngleSweep(lastAngle)
 
     function drawAngleSweep(angle) {
+
+        lastAngle = angle
+
         var length = 30
           , width = 2
           , color = "rgba(40,40,40,1)"
@@ -163,6 +169,7 @@ function UnitCircle() {
           , textCoords = {  x: (radius+5)*cos
                          , y: (radius+5)*sin }
 
+        angleDisplay = (labelType == 0) ? parseFloat(angle).toFixed(2)+" rad" : parseFloat((180/Math.PI)*angle).toFixed(2) + "°"
 
         svg.append("text")
            .attr("class", "angleSweep")
@@ -173,7 +180,7 @@ function UnitCircle() {
            .attr("font-family", "'Consolas', monospace, sans-serif")
            .attr("font-size", "12px")
            .attr("fill", "rgba(255,0,0,1)")
-           .text("θ = "+parseFloat(angle).toFixed(2)+" rad")
+           .text("θ = "+angleDisplay)
 
         svg.append("text")
            .attr("class", "angleSweep")
