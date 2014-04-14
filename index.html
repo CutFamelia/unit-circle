@@ -3,8 +3,15 @@
 <head>
     <title>Unit Circle | Interactive Visualization by Derrick Cohodas</title>
     <link rel=stylesheet href="css/main.css">
+    <meta charset="UTF-8">
 </head>
 <body>
+    <div class="labelType" style="position:absolute">
+        <input type="radio" name="labelType" value="0" checked="checked">Radians<br>
+        <input type="radio" name="labelType" value="1">Degrees<br>
+        <input type="radio" name="labelType" value="2">Sin<br>
+        <input type="radio" name="labelType" value="3">Cos<br>
+    </div>
     <script src="js/d3.min.js"></script>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src="js/main.js"></script>

@@ -6,70 +6,48 @@ function UnitCircle() {
 
     var main = d3.select('body')
     var width = 960
-      , height = 500
-      , radius = 180
+      , height = 700
+      , radius = 160
       , angleAliases = {}
-       
-       angleAliases[parseFloat(0).toFixed(2)] = ["0 or 2&pi;", "0&deg; or 360&deg;"]
+      , labelType = 0
 
-       angleAliases[parseFloat(Math.PI/6).toFixed(2)] = "&pi;/6"
-       angleAliases[parseFloat(Math.PI/4).toFixed(2)] = "&pi;/4"
-       angleAliases[parseFloat(Math.PI/3).toFixed(2)] = "&pi;/3"
+    $('input[name=labelType]:radio').on("change", function(){
+        labelType = $(this).val()
+        stdAngles()
+        console.log(labelType)
+    })
 
-       angleAliases[parseFloat(Math.PI/2).toFixed(2)] = "&pi;/2"
+    //Lookup table
+    angleAliases[parseFloat(0).toFixed(2)] = ["0 or 2π", "0° or 360°", "0", "1"] //Radians, degrees, sin, cos
 
-       angleAliases[parseFloat(5*(Math.PI/6)).toFixed(2)] = "5&pi;/6"
-       angleAliases[parseFloat(2*(Math.PI/3)).toFixed(2)] = "2&pi;/3"
-       angleAliases[parseFloat(3*(Math.PI/4)).toFixed(2)] = "3&pi;/4"
+    angleAliases[parseFloat(Math.PI/6).toFixed(2)] = ["π/6", "30°", "1/2", "√3/2"]
+    angleAliases[parseFloat(Math.PI/4).toFixed(2)] = ["π/4", "45°", "1/√2", "1/√2"]
+    angleAliases[parseFloat(Math.PI/3).toFixed(2)] = ["π/3", "60°", "√3/2", "1/2"]
 
-       angleAliases[parseFloat(Math.PI).toFixed(2)] = "&pi;"
+    angleAliases[parseFloat(Math.PI/2).toFixed(2)] = ["π/2", "90°", "1", "0"]
 
-       angleAliases[parseFloat(7*(Math.PI/6)).toFixed(2)] = "7&pi;/6"
-       angleAliases[parseFloat(4*(Math.PI/3)).toFixed(2)] = "4&pi;/3"
-       angleAliases[parseFloat(5*(Math.PI/4)).toFixed(2)] = "5&pi;/4"
+    angleAliases[parseFloat(2*(Math.PI/3)).toFixed(2)] = ["2π/3", "120°", "√3/2", "-1/2"]
+    angleAliases[parseFloat(3*(Math.PI/4)).toFixed(2)] = ["3π/4", "135°", "1/√2", "-1/√2"]
+    angleAliases[parseFloat(5*(Math.PI/6)).toFixed(2)] = ["5π/6", "150°", "1/2", "-√3/2"]
 
-       angleAliases[parseFloat(3*(Math.PI/2)).toFixed(2)] = "3&pi;/2"
+    angleAliases[parseFloat(Math.PI).toFixed(2)] = ["π", "180°", "0", "1"]
 
-       angleAliases[parseFloat(11*(Math.PI/6)).toFixed(2)] = "11&pi;/6"
-       angleAliases[parseFloat(5*(Math.PI/3)).toFixed(2)] = "5&pi;/3"
-       angleAliases[parseFloat(7*(Math.PI/4)).toFixed(2)] = "7&pi;/4"
+    angleAliases[parseFloat(7*(Math.PI/6)).toFixed(2)] = ["7π/6", "210°", "-1/2", "-√3/2"]
+    angleAliases[parseFloat(5*(Math.PI/4)).toFixed(2)] = ["5π/4", "225°", "-1/√2", "-1/√2"]
+    angleAliases[parseFloat(4*(Math.PI/3)).toFixed(2)] = ["4π/3", "240°", "-√3/2", "-1/2"]
 
-       console.dir(angleAliases)
+    angleAliases[parseFloat(3*(Math.PI/2)).toFixed(2)] = ["3π/2", "270°", "-1", "0"]
 
-/*
-drawAngleMark(0)
-
-    drawAngleMark((Math.PI/6))
-    drawAngleMark((Math.PI/3))
-    drawAngleMark((Math.PI/4))
-
-    drawAngleMark(Math.PI/2)
-
-    drawAngleMark(5*(Math.PI/6))
-    drawAngleMark(2*(Math.PI/3))
-    drawAngleMark(3*(Math.PI/4))
-    
-    drawAngleMark(Math.PI)
-
-    drawAngleMark(7*(Math.PI/6))
-    drawAngleMark(4*(Math.PI/3))
-    drawAngleMark(5*(Math.PI/4))
-
-    drawAngleMark(3*Math.PI/2)
-
-    drawAngleMark(11*(Math.PI/6))
-    drawAngleMark(5*(Math.PI/3))
-    drawAngleMark(7*(Math.PI/4))
-
- */
-
+    angleAliases[parseFloat(5*(Math.PI/3)).toFixed(2)] = ["5π/3", "300°", "-√3/2", "1/2"]
+    angleAliases[parseFloat(7*(Math.PI/4)).toFixed(2)] = ["7π/4", "315°", "-1/√2", "1/√2"]
+    angleAliases[parseFloat(11*(Math.PI/6)).toFixed(2)] = ["11π/6", "330°", "-1/2", "√3/2"]
 
     //Main group
     var svg = main.append("svg")
       .attr("width", width)
       .attr("height", height)
       .append("g")
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ") scale(1, -1)")
+      .attr("transform", "translate(" + width / 3 + "," + height / 3 + ") scale(1, -1)")
       .on("mousedown", function() {
          console.log(d3.mouse(this))
       })
@@ -79,33 +57,33 @@ drawAngleMark(0)
     var axisColor = "rgba(100,100,100,1)"
     svg.append("line")
        .attr("class", "y")
-       .attr("y1", -(radius+50))
-       .attr("y2", (radius+50))
+       .attr("y1", -(radius+30))
+       .attr("y2", (radius+30))
        .style("fill", "none")
        .style("stroke", axisColor)
        .style("stroke-width", "2px")
     svg.append("line")
        .attr("class", "x")
-       .attr("x1", -(radius+50))
-       .attr("x2", (radius+50))
+       .attr("x1", -(radius+30))
+       .attr("x2", (radius+30))
        .style("fill", "none")
        .style("stroke", axisColor)
        .style("stroke-width", "2px")
     svg.append("polygon")
        .attr("class", "ynArrow")
-       .attr("points", "0,"+(radius+60)+" 5,"+(radius+50)+" -5,"+(radius+50))
+       .attr("points", "0,"+(radius+40)+" 5,"+(radius+30)+" -5,"+(radius+30))
        .style("fill", axisColor)
     svg.append("polygon")
        .attr("class", "ypArrow")
-       .attr("points", "0,"+ -(radius+60)+" 5,"+ -(radius+50)+" -5,"+ -(radius+50))
+       .attr("points", "0,"+ -(radius+40)+" 5,"+ -(radius+30)+" -5,"+ -(radius+30))
        .style("fill", axisColor)
     svg.append("polygon")
        .attr("class", "xnArrow")
-       .attr("points", -(radius+60)+",0 "+-(radius+50)+",5 "+-(radius+50)+",-5")
+       .attr("points", -(radius+40)+",0 "+-(radius+30)+",5 "+-(radius+30)+",-5")
        .style("fill", axisColor)
     svg.append("polygon")
        .attr("class", "xpArrow")
-       .attr("points",  (radius+60)+",0 "+(radius+50)+",5 "+(radius+50)+",-5")
+       .attr("points",  (radius+40)+",0 "+(radius+30)+",5 "+(radius+30)+",-5")
        .style("fill", axisColor)
     //Center
     svg.append("circle")
@@ -132,13 +110,16 @@ drawAngleMark(0)
           , coords = { inner: { x: (radius-(length/2))*cos
                               , y: (radius-(length/2))*sin }
                      , outer: { x: (radius+(length/2))*cos
-                              , y: (radius+(length/2))*sin } 
+                              , y: (radius+(length/2))*sin }
+                     , text: { x: (radius+(2*length))*cos - length/2
+                              , y: (radius+(2*length))*sin - length/4} 
                      , center: { x: radius*cos
                                , y: radius*sin }
           }
 
+        //Line mark
         svg.append("line")
-           .attr("class", "angleMarkLine")
+           .attr("class", "angleMark")
            .attr("x1", coords.inner.x)
            .attr("y1", coords.inner.y)
            .attr("x2", coords.outer.x)
@@ -147,15 +128,28 @@ drawAngleMark(0)
            .style("stroke", color)
            .style("stroke-width", "3.5px")
 
+        //Circle
         svg.append("circle")
-           .attr("class", "angleMarkCircle")
+           .attr("class", "angleMark")
            .attr("cx", coords.center.x)
            .attr("cy", coords.center.y)
            .attr("r", 15)
            .style("fill", "rgba(0,0,0,0)")
            .style("stroke", "none")
-    }
 
+        //Text
+        svg.append("text")
+           .attr("class", "angleMark")
+           .attr("x", coords.text.x)
+           .attr("y", coords.text.y)
+           //.attr("transform", "rotate(90, "+coords.text.x+", "+coords.text.y+")")
+           .attr("transform", "matrix(1, 0, 0, -1, "+ (coords.text.x-(1)*coords.text.x) +", "+ (coords.text.y-(-1)*coords.text.y) +")")
+           .attr("font-family", "'Consolas', monospace, sans-serif")
+           .attr("font-size", "12px")
+           .attr("fill", color)
+           .text(angleAliases[parseFloat(angle).toFixed(2)][labelType])
+    }
+//<text x="20" y="20" font-family="sans-serif" font-size="20px" fill="red">Hello!</text>
     function drawAngleSweep(angle) {
         var length = 30
           , width = 2
@@ -214,7 +208,7 @@ drawAngleMark(0)
            .style("fill", color)
            .style("stroke", "none")
 
-        //Angle
+        //Angle arc
         var anglePath = d3.svg.arc()
            .outerRadius(21)
            .innerRadius(19)
@@ -260,29 +254,35 @@ drawAngleMark(0)
         if(!timedOut) draw(this)
     })
 
-    drawAngleMark(0)
+    function stdAngles() {
+        $('.angleMark').remove()
 
-    drawAngleMark((Math.PI/6))
-    drawAngleMark((Math.PI/3))
-    drawAngleMark((Math.PI/4))
+        drawAngleMark(0)
 
-    drawAngleMark(Math.PI/2)
+        drawAngleMark((Math.PI/6))
+        drawAngleMark((Math.PI/3))
+        drawAngleMark((Math.PI/4))
 
-    drawAngleMark(5*(Math.PI/6))
-    drawAngleMark(2*(Math.PI/3))
-    drawAngleMark(3*(Math.PI/4))
-    
-    drawAngleMark(Math.PI)
+        drawAngleMark(Math.PI/2)
 
-    drawAngleMark(7*(Math.PI/6))
-    drawAngleMark(4*(Math.PI/3))
-    drawAngleMark(5*(Math.PI/4))
+        drawAngleMark(5*(Math.PI/6))
+        drawAngleMark(2*(Math.PI/3))
+        drawAngleMark(3*(Math.PI/4))
+        
+        drawAngleMark(Math.PI)
 
-    drawAngleMark(3*Math.PI/2)
+        drawAngleMark(7*(Math.PI/6))
+        drawAngleMark(4*(Math.PI/3))
+        drawAngleMark(5*(Math.PI/4))
 
-    drawAngleMark(11*(Math.PI/6))
-    drawAngleMark(5*(Math.PI/3))
-    drawAngleMark(7*(Math.PI/4))
+        drawAngleMark(3*Math.PI/2)
+
+        drawAngleMark(11*(Math.PI/6))
+        drawAngleMark(5*(Math.PI/3))
+        drawAngleMark(7*(Math.PI/4))
+    }
+
+    stdAngles()
 
 }
 
