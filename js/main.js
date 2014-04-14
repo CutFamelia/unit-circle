@@ -149,7 +149,9 @@ function UnitCircle() {
            .attr("fill", color)
            .text(angleAliases[parseFloat(angle).toFixed(2)][labelType])
     }
-//<text x="20" y="20" font-family="sans-serif" font-size="20px" fill="red">Hello!</text>
+
+    drawAngleSweep(1.23);
+
     function drawAngleSweep(angle) {
         var length = 30
           , width = 2
@@ -158,7 +160,71 @@ function UnitCircle() {
           , sin = Math.sin(angle)
           , coords = {  x: radius*cos
                      , y: radius*sin }
+          , textCoords = {  x: (radius+5)*cos
+                         , y: (radius+5)*sin }
 
+
+        svg.append("text")
+           .attr("class", "angleSweep")
+           .attr("x", 230)
+           .attr("y", 187)
+           //.attr("transform", "rotate(90, "+coords.text.x+", "+coords.text.y+")")
+           .attr("transform", "matrix(1, 0, 0, -1, "+ (200-(1)*200) +", "+ (187-(-1)*187) +")")
+           .attr("font-family", "'Consolas', monospace, sans-serif")
+           .attr("font-size", "12px")
+           .attr("fill", "rgba(255,0,0,1)")
+           .text("θ = "+parseFloat(angle).toFixed(2)+" rad")
+
+        svg.append("text")
+           .attr("class", "angleSweep")
+           .attr("x", 340)
+           .attr("y", 187)
+           //.attr("transform", "rotate(90, "+coords.text.x+", "+coords.text.y+")")
+           .attr("transform", "matrix(1, 0, 0, -1, "+ (340-(1)*340) +", "+ (187-(-1)*187) +")")
+           .attr("font-family", "'Consolas', monospace, sans-serif")
+           .attr("font-size", "12px")
+           .attr("fill", "rgba(0,0,0,1)")
+           .text("(")
+        svg.append("text")
+           .attr("class", "angleSweep")
+           .attr("x", 350)
+           .attr("y", 187)
+           //.attr("transform", "rotate(90, "+coords.text.x+", "+coords.text.y+")")
+           .attr("transform", "matrix(1, 0, 0, -1, "+ (340-(1)*340) +", "+ (187-(-1)*187) +")")
+           .attr("font-family", "'Consolas', monospace, sans-serif")
+           .attr("font-size", "12px")
+           .attr("fill", "rgba(0,200,0,1)")
+           .text(parseFloat(cos).toFixed(2))
+        svg.append("text")
+           .attr("class", "angleSweep")
+           .attr("x", 388)
+           .attr("y", 187)
+           //.attr("transform", "rotate(90, "+coords.text.x+", "+coords.text.y+")")
+           .attr("transform", "matrix(1, 0, 0, -1, "+ (340-(1)*340) +", "+ (187-(-1)*187) +")")
+           .attr("font-family", "'Consolas', monospace, sans-serif")
+           .attr("font-size", "12px")
+           .attr("fill", "rgba(0,0,0,1)")
+           .text(",")
+        svg.append("text")
+           .attr("class", "angleSweep")
+           .attr("x", 395)
+           .attr("y", 187)
+           //.attr("transform", "rotate(90, "+coords.text.x+", "+coords.text.y+")")
+           .attr("transform", "matrix(1, 0, 0, -1, "+ (340-(1)*340) +", "+ (187-(-1)*187) +")")
+           .attr("font-family", "'Consolas', monospace, sans-serif")
+           .attr("font-size", "12px")
+           .attr("fill", "rgba(0,0,255,1)")
+           .text(parseFloat(sin).toFixed(2))
+        svg.append("text")
+           .attr("class", "angleSweep")
+           .attr("x", 435)
+           .attr("y", 187)
+           //.attr("transform", "rotate(90, "+coords.text.x+", "+coords.text.y+")")
+           .attr("transform", "matrix(1, 0, 0, -1, "+ (340-(1)*340) +", "+ (187-(-1)*187) +")")
+           .attr("font-family", "'Consolas', monospace, sans-serif")
+           .attr("font-size", "12px")
+           .attr("fill", "rgba(0,0,0,1)")
+           .text(")")
 
         //Center to circle
         svg.append("line")
@@ -171,7 +237,18 @@ function UnitCircle() {
            .style("stroke", color)
            .style("stroke-width", "2px")
 
-        //Circle to x-axis
+        //Y component
+        svg.append("line")
+           .attr("class", "angleSweep")
+           .attr("x1", 0)
+           .attr("y1", 0)
+           .attr("x2", coords.x)
+           .attr("y2", 0)
+           .style("fill", "none")
+           .style("stroke", "rgba(0,255,0,1)")
+           .style("stroke-width", "2px")
+
+        //X component
         svg.append("line")
            .attr("class", "angleSweep")
            .attr("x1", coords.x)
@@ -179,11 +256,11 @@ function UnitCircle() {
            .attr("x2", coords.x)
            .attr("y2", coords.y)
            .style("fill", "none")
-           .style("stroke", color)
+           .style("stroke", "rgba(0,0,255,1)")
            .style("stroke-width", "2px")
            .attr("stroke-dasharray", "5, 5")
 
-        //Right Angle Symbol
+        //Right Angle Symbol and coordinates
         if(coords.x !== 0 && coords.y !== 0){
             var xSize = (coords.x < 0 ? -Math.floor(radius/18) : Math.floor(radius/18))
               , ySize = (coords.y < 0 ? -Math.floor(radius/18) : Math.floor(radius/18))
